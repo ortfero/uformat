@@ -67,5 +67,10 @@ TEST_CASE("texter::quoted") {
 TEST_CASE("texter.attributes") {
   uformat::dynamic_texter target;
   target.attributes("a1", 127562, "a2", "title");
-  REQUIRE(target.string() == "{a1 = 127562, a2 = 'title'}");
+  REQUIRE(target.string() == "{a1 = 127562, a2 = \"title\"}");
+}
+
+
+TEST_CASE("some") {
+  auto const x = uformat::error_with(-1, "Ok");
 }
