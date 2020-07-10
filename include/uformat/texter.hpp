@@ -77,8 +77,15 @@ namespace uformat {
     }
 
 
-    texter& out(char const* cc, size_type n) {
+    texter& charz_n(char const* cc, size_type n) {
       string_.append(cc, n);
+      return *this;
+    }
+
+
+    texter& char_n(char c, size_type n) {
+      for(size_type i = 0; i != n; ++i)
+        string_.push_back(c);
       return *this;
     }
 

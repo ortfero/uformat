@@ -37,8 +37,8 @@ namespace uformat {
   public:
 
     using value_type = char;
-    using size_type = size_t;
-    using difference_type = ptrdiff_t;
+    using size_type = std::size_t;
+    using difference_type = std::ptrdiff_t;
     using pointer = char*;
     using const_pointer = char const*;
     using reference = char&;
@@ -46,7 +46,7 @@ namespace uformat {
     using iterator = char*;
     using const_iterator = char const*;
 
-    static size_type const npos = size_type(-1);
+    static constexpr size_type npos = size_type(-1);
 
     fixed_string() noexcept: n_(0) {
       p_[0] = '\0';
@@ -137,13 +137,13 @@ namespace uformat {
 
     char& at (size_type i) {
       if(i >= n_)
-        throw std::out_of_range("Attempt to access fixed_string out of range");
+        throw std::out_of_range("invalid string position");
       return p_[i];
     }
 
     char const& at (size_type i) const {
       if(i >= n_)
-        throw std::out_of_range("Attempt to access fixed_string out of range");
+        throw std::out_of_range("invalid string position");
       return p_[i];
     }
 
