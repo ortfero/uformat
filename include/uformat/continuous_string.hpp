@@ -74,6 +74,7 @@ namespace uformat {
     
   } // detail
   
+  
   class continuous_string {
   public:
   

@@ -23,6 +23,7 @@
 #pragma once
 
 
+#include <cstddef>
 #include <cstdio>
 #include <string_view>
 #include <iosfwd>
@@ -56,9 +57,19 @@ namespace uformat {
       assign(rhs.begin(), rhs.end());
     }
 
-    template<int M>
+    template<std::size_t M>
     fixed_string(fixed_string<M> const& rhs) noexcept {
       assign(rhs.begin(), rhs.end());
+    }
+    
+    template<std::size_t M>
+    explicit fixed_string(char const (&data)[M]) noexcept {
+      assign(data, data + M);
+    }
+    
+    template<std::size_t M>
+    explicit fixed_string(wchar_t const (&data)[M]) noexcept {
+      assign(data, data + M);
     }
 
     explicit fixed_string(char const* data) noexcept {
