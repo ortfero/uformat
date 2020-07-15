@@ -30,6 +30,7 @@
 #include <mutex>
 #include <cstdio>
 #include "fixed_string.hpp"
+#include "continuous_string.hpp"
 
 
 namespace uformat {
@@ -41,6 +42,7 @@ namespace uformat {
   public:
 
     using size_type = size_t;
+    using string_type = S;
 
     static constexpr auto default_precision = 6;
 
@@ -77,7 +79,7 @@ namespace uformat {
     }
 
 
-    texter& charz_n(char const* cc, size_type n) {
+    texter& append(char const* cc, size_type n) {
       string_.append(cc, n);
       return *this;
     }
@@ -205,17 +207,17 @@ namespace uformat {
 
 
     friend texter& operator << (texter& p, std::string_view const& sv) {
-      return p.out(sv.data(), sv.size());
+      return p.append(sv.data(), sv.size());
     }
 
 
     friend texter& operator << (texter& p, std::string const& s) {
-      return p.out(s.data(), s.size());
+      return p.append(s.data(), s.size());
     }
 
 
     friend texter& operator << (texter& p, bool x) {
-      return x ? p.out("true", 4) : p.out("false", 5);
+      return x ? p.append("true", 4) : p.append("false", 5);
     }
 
 
@@ -579,6 +581,7 @@ namespace uformat {
   using page_texter = texter<page_string>;
   using dpage_texter = texter<dpage_string>;
   using large_texter = texter<large_string>;
+  using continuous_texter = texter<continuous_string<>>;
 
 
   namespace detail::printer {

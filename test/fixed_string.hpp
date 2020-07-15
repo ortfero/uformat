@@ -5,7 +5,7 @@
 #include <uformat/fixed_string.hpp>
 
 
-TEST_CASE("fixed string constructed by default") {
+TEST_CASE("fixed_string::fixed_string") {
   uformat::string target;
   REQUIRE(target.empty());
   REQUIRE(target.size() == 0);
@@ -14,7 +14,7 @@ TEST_CASE("fixed string constructed by default") {
 
 
 
-TEST_CASE("fixed string constructed from 'test'") {
+TEST_CASE("fixed_string(\"test\")") {
   uformat::string target("test");
   REQUIRE(!target.empty());
   REQUIRE(target.size() == sizeof("test") - 1);

@@ -33,7 +33,7 @@
 namespace uformat {
 
 
-  template<size_t N>
+  template<std::size_t N>
   class fixed_string {
   public:
 
@@ -89,20 +89,20 @@ namespace uformat {
     }
 
     explicit fixed_string(std::string const& rhs) noexcept {
-      assign(rhs.begin(), rhs.end());
+      assign(rhs.data(), rhs.data() + rhs.size());
     }
 
     explicit fixed_string(std::string_view const& rhs) noexcept {
-      assign(rhs.begin(), rhs.end());
+      assign(rhs.data(), rhs.data() + rhs.size());
     }
 
     fixed_string& operator = (fixed_string const& rhs) noexcept {
-      return assign(rhs.begin(), rhs.end());
+      return assign(rhs.data(), rhs.data() + rhs.size());
     }
 
-    template<int M>
+    template<std::size_t M>
     fixed_string& operator = (fixed_string<M> const& rhs) noexcept {
-      return assign(rhs.begin(), rhs.end());
+      return assign(rhs.data(), rhs.data() + rhs.size());
     }
 
     fixed_string& operator = (char const* data) noexcept {
@@ -110,11 +110,11 @@ namespace uformat {
     }
 
     fixed_string& operator = (std::string const& rhs) noexcept {
-      return assign(rhs.begin(), rhs.end());
+      return assign(rhs.data(), rhs.data() + rhs.size());
     }
 
     fixed_string& operator = (std::string_view const& rhs) noexcept {
-      return assign(rhs.begin(), rhs.end());
+      return assign(rhs.data(), rhs.data() + rhs.size());
     }
 
     char* begin() noexcept { return p_; }
@@ -168,7 +168,7 @@ namespace uformat {
       return *this;
     }
 
-    template<int M>
+    template<std::size_t M>
     fixed_string& operator += (fixed_string<M> const& rhs) noexcept {
       return append(rhs.begin(), rhs.end());
     }
@@ -185,7 +185,7 @@ namespace uformat {
       return append(rhs.data(), rhs.data() + rhs.size());
     }
 
-    template<int M>
+    template<std::size_t M>
     fixed_string& append(fixed_string<M> const& rhs) noexcept {
       return append(rhs.begin(), rhs.end());
     }
@@ -270,20 +270,20 @@ namespace uformat {
     }
 
     fixed_string& assign(fixed_string const& rhs) noexcept {
-      return assign(rhs.begin(), rhs.end());
+      return assign(rhs.data(), rhs.data() + rhs.size());
     }
 
     template<int M>
     fixed_string& assign(fixed_string<M> const& rhs) noexcept {
-      return assign(rhs.begin(), rhs.end());
+      return assign(rhs.data(), rhs.data() + rhs.size());
     }
 
     fixed_string& assign(std::string const& rhs) noexcept {
-      return assign(rhs.begin(), rhs.end());
+      return assign(rhs.data(), rhs.data() + rhs.size());
     }
 
     fixed_string& assign(std::string_view const& rhs) noexcept {
-      return assign(rhs.begin(), rhs.end());
+      return assign(rhs.data(), rhs.data() + rhs.size());
     }
 
     fixed_string& assign(char const* data) noexcept {
@@ -333,8 +333,8 @@ namespace uformat {
       return npos;
     }
 
-    fixed_string substr(size_type pos, size_type n) const noexcept {
-      return fixed_string(p_ + pos, p_ + pos + n);
+    std::string_view substr(size_type pos, size_type n) const noexcept {
+      return std::string_view{p_ + pos, p_ + pos + n};
     }
 
     template<int M>
@@ -363,7 +363,7 @@ namespace uformat {
     }
 
     int compare(char const* s) const noexcept {
-      if(!s || *s == '\0')
+      if(s == nullptr)
         return n_ == 0 ? 0 : 1;
       char const* c = p_;
       while(*c == *s && *c != '\0') {
@@ -392,227 +392,227 @@ namespace uformat {
 
 
 
-  template<size_t N>
+  template<std::size_t N>
   std::string& operator += (std::string const& x, fixed_string<N> const& y) {
     return x.append(y.data(), y.size());
   }
 
-  template<size_t N, size_t M>
+  template<std::size_t N, std::size_t M>
   bool operator == (fixed_string<N> const& x, fixed_string<M> const& y) {
     return x.compare(y) == 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator == (fixed_string<N> const& x, char const* y) {
     return x.compare(y) == 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator == (char const* x, fixed_string<N> const& y) {
     return y.compare(x) == 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator == (fixed_string<N> const& x, std::string const& y) {
     return x.compare(y) == 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator == (std::string const& x, fixed_string<N> const& y) {
     return y.compare(x) == 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator == (fixed_string<N> const& x, std::string_view const& y) {
     return x.compare(y) == 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator == (std::string_view const& x, fixed_string<N> const& y) {
     return y.compare(x) == 0;
   }
 
-  template<size_t N, size_t M>
+  template<std::size_t N, std::size_t M>
   bool operator != (fixed_string<N> const& x, fixed_string<M> const& y) {
     return x.compare(y) != 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator != (fixed_string<N> const& x, char const* y) {
     return x.compare(y) != 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator != (char const* x, fixed_string<N> const& y) {
     return y.compare(x) != 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator != (fixed_string<N> const& x, std::string const& y) {
     return x.compare(y) != 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator != (std::string const& x, fixed_string<N> const& y) {
     return y.compare(x) != 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator != (fixed_string<N> const& x, std::string_view const& y) {
     return x.compare(y) != 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator != (std::string_view const& x, fixed_string<N> const& y) {
     return y.compare(x) != 0;
   }
 
-  template<size_t N, size_t M>
+  template<std::size_t N, std::size_t M>
   bool operator < (fixed_string<N> const& x, fixed_string<M> const& y) {
     return x.compare(y) != 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator < (fixed_string<N> const& x, char const* y) {
     return x.compare(y) != 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator < (char const* x, fixed_string<N> const& y) {
     return y.compare(x) != 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator < (fixed_string<N> const& x, std::string const& y) {
     return x.compare(y) != 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator < (std::string const& x, fixed_string<N> const& y) {
     return y.compare(x) != 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator < (fixed_string<N> const& x, std::string_view const& y) {
     return x.compare(y) != 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator < (std::string_view const& x, fixed_string<N> const& y) {
     return y.compare(x) != 0;
   }
 
-  template<size_t N, size_t M>
+  template<std::size_t N, std::size_t M>
   bool operator <= (fixed_string<N> const& x, fixed_string<M> const& y) {
     return x.compare(y) != 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator <= (fixed_string<N> const& x, char const* y) {
     return x.compare(y) != 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator <= (char const* x, fixed_string<N> const& y) {
     return y.compare(x) != 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator <= (fixed_string<N> const& x, std::string const& y) {
     return x.compare(y) != 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator <= (std::string const& x, fixed_string<N> const& y) {
     return y.compare(x) != 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator <= (fixed_string<N> const& x, std::string_view const& y) {
     return x.compare(y) != 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator <= (std::string_view const& x, fixed_string<N> const& y) {
     return y.compare(x) != 0;
   }
 
-  template<size_t N, size_t M>
+  template<std::size_t N, std::size_t M>
   bool operator > (fixed_string<N> const& x, fixed_string<M> const& y) {
     return x.compare(y) != 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator > (fixed_string<N> const& x, char const* y) {
     return x.compare(y) != 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator > (char const* x, fixed_string<N> const& y) {
     return y.compare(x) != 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator > (fixed_string<N> const& x, std::string const& y) {
     return x.compare(y) != 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator > (std::string const& x, fixed_string<N> const& y) {
     return y.compare(x) != 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator > (fixed_string<N> const& x, std::string_view const& y) {
     return x.compare(y) != 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator > (std::string_view const& x, fixed_string<N> const& y) {
     return y.compare(x) != 0;
   }
 
-  template<size_t N, size_t M>
+  template<std::size_t N, std::size_t M>
   bool operator >= (fixed_string<N> const& x, fixed_string<M> const& y) {
     return x.compare(y) != 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator >= (fixed_string<N> const& x, char const* y) {
     return x.compare(y) != 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator >= (char const* x, fixed_string<N> const& y) {
     return y.compare(x) != 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator >= (fixed_string<N> const& x, std::string const& y) {
     return x.compare(y) != 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator >= (std::string const& x, fixed_string<N> const& y) {
     return y.compare(x) != 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator >= (fixed_string<N> const& x, std::string_view const& y) {
     return x.compare(y) != 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   bool operator >= (std::string_view const& x, fixed_string<N> const& y) {
     return y.compare(x) != 0;
   }
 
-  template<size_t N>
+  template<std::size_t N>
   std::istream& operator >> (std::istream& stream, fixed_string<N>& fs) {
     return stream >> fs.begin();
   }
 
-  template<size_t N>
+  template<std::size_t N>
   std::ostream& operator << (std::ostream& stream, fixed_string<N> const& fs) {
     return stream << fs.begin();
   }

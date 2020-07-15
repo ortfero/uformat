@@ -2,6 +2,7 @@
 #include <doctest/doctest.h>
 
 #include "fixed_string.hpp"
+#include "continuous_string.hpp"
 #include "texter.hpp"
 
 
