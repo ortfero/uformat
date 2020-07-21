@@ -64,13 +64,43 @@ TEST_CASE("texter::quoted") {
 }
 
 
-TEST_CASE("texter.attributes") {
+TEST_CASE("texter::dquoted") {
+  uformat::dynamic_texter target;
+  target.dquoted(127562);
+  REQUIRE(target.string() == "\"127562\"");
+}
+
+
+TEST_CASE("texter::attributes") {
   uformat::dynamic_texter target;
   target.attributes("a1", 127562, "a2", "title");
   REQUIRE(target.string() == "{a1 = 127562, a2 = \"title\"}");
 }
 
 
-TEST_CASE("some") {
-  auto const x = uformat::error_with(-1, "Ok");
+TEST_CASE("texter::left/1") {
+  uformat::dynamic_texter target;
+  target.left(4, -1);
+  REQUIRE(target.string() == "-1  ");
+}
+
+
+TEST_CASE("texter::left/2") {
+  uformat::dynamic_texter target;
+  target.left(2, -10);
+  REQUIRE(target.string() == "-10");
+}
+
+
+TEST_CASE("texter::right/1") {
+  uformat::dynamic_texter target;
+  target.right(4, -1);
+  REQUIRE(target.string() == "  -1");
+}
+
+
+TEST_CASE("texter::right/2") {
+  uformat::dynamic_texter target;
+  target.right(2, -10);
+  REQUIRE(target.string() == "-10");
 }

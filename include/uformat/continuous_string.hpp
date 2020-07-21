@@ -803,9 +803,10 @@ bool operator >= (std::string_view const& x, continuous_string<N> const& y) {
 }
 
 
-template<std::size_t N>
-std::ostream& operator << (std::ostream& stream, continuous_string<N> const& fs) {
-  return stream << fs.begin();
+template<typename OS, std::size_t N>
+OS& operator << (OS& stream, continuous_string<N> const& fs) {
+  stream << std::string_view{ fs.data(), fs.size() };
+  return stream;
 }
 
 

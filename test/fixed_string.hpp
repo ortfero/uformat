@@ -1,6 +1,7 @@
 #pragma once
 
 
+#include <sstream>
 #include <doctest/doctest.h>
 #include <uformat/fixed_string.hpp>
 
@@ -19,4 +20,12 @@ TEST_CASE("fixed_string(\"test\")") {
   REQUIRE(!target.empty());
   REQUIRE(target.size() == sizeof("test") - 1);
   REQUIRE(target.length() == sizeof("test") - 1);
+}
+
+
+TEST_CASE("operator << (ostream, fixed_string)") {
+  std::stringstream ss;
+  uformat::string target("test");
+  ss << target;
+  REQUIRE(ss.str() == "test");
 }
