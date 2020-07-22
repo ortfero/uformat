@@ -528,7 +528,7 @@ private:
     if(data_ == nullptr)
       return;
     release_pages(data_, reserved_capacity_);
-    data_ == nullptr;
+    data_ = nullptr;
     reserved_capacity_ = 0;
     committed_capacity_ = 0;
     size_ = 0;
