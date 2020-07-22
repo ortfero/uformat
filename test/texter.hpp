@@ -71,6 +71,13 @@ TEST_CASE("texter::dquoted") {
 }
 
 
+TEST_CASE("texter::char_n") {
+  uformat::dynamic_texter target;
+  target.char_n('*', 7);
+  REQUIRE(target.string() == "*******");
+}
+
+
 TEST_CASE("texter::attributes") {
   uformat::dynamic_texter target;
   target.attributes("a1", 127562, "a2", "title");
@@ -94,8 +101,8 @@ TEST_CASE("texter::left/2") {
 
 TEST_CASE("texter::right/1") {
   uformat::dynamic_texter target;
-  target.right(4, -1);
-  REQUIRE(target.string() == "  -1");
+  target.right(15, "Paracletes");
+  REQUIRE(target.string() == "     Paracletes");
 }
 
 
