@@ -639,46 +639,4 @@ namespace uformat {
   using continuous_texter = texter<continuous_string<>>;
 
 
-  namespace detail::printer {
-
-    inline std::mutex sync;
-    inline dynamic_texter buffer;
-
-  }
-
-
-  template<typename... Args>
-  void print(Args&&... args) {
-    std::unique_lock g{detail::printer::sync};
-    detail::printer::buffer.clear();
-    detail::printer::buffer.print(std::forward<Args>(args)...);
-    std::fputs(detail::printer::buffer.data(), stdout);
-    std::fputc('\n', stdout);
-  }
-
-
-  template<typename R, typename... Args>
-  R print_with(R&& result, Args&&... args) {
-    print(std::forward<Args>(args)...);
-    return std::move(std::forward<R>(result));
-  }
-
-
-  template<typename... Args>
-  void error(Args&&... args) {
-    std::unique_lock g{detail::printer::sync};
-    detail::printer::buffer.clear();
-    detail::printer::buffer.print(std::forward<Args>(args)...);
-    std::fputs(detail::printer::buffer.data(), stderr);
-    std::fputc('\n', stderr);
-  }
-
-
-  template<typename R, typename... Args>
-  R error_with(R&& result, Args&&... args) {
-    error(std::forward<Args>(args)...);
-    return std::move(std::forward<R>(result));
-  }
-
-
 } // uformat
