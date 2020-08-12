@@ -225,7 +225,7 @@ namespace uformat {
       string_.push_back(' ');
       string_.push_back('=');
       string_.push_back(' ');
-      format_value(std::forward<Arg>(value));
+      format_value(value);
       format_other_attributes(std::forward<Pairs>(pairs)...);
       string_.push_back('}');
       return *this;
@@ -245,8 +245,23 @@ namespace uformat {
     }
 
 
+    friend texter& operator << (texter& p, wchar_t c) {
+      p.string_.push_back(char(c));
+      return p;
+    }
+
+
     friend texter& operator << (texter& p, char const* cc) {
       p.string_.append(cc);
+      return p;
+    }
+
+
+    friend texter& operator << (texter& p, wchar_t const* cc) {
+      if (cc == nullptr)
+        return p;
+      std::string converted{ cc, cc + std::wcslen(cc) };
+      p.string_.append(converted);
       return p;
     }
 
@@ -309,7 +324,7 @@ namespace uformat {
 
     template<size_t N>
     friend texter& operator << (texter& p, fixed_string<N> const& fs) {
-      p.out(fs.data(), fs.size());
+      p.append(fs.data(), fs.size());
       return p;
     }
 
@@ -346,7 +361,7 @@ namespace uformat {
       string_.push_back(' ');
       string_.push_back('=');
       string_.push_back(' ');
-      format_value(std::forward<Arg>(value));
+      format_value(value);
       format_other_attributes(std::forward<Pairs>(pairs)...);
     }
 
@@ -376,6 +391,20 @@ namespace uformat {
       string_.push_back('\"');
       string_.append(s.data(), s.size());
       string_.push_back('\"');
+    }
+
+
+    void format_value(std::wstring const& s) {
+      size_type allocated;
+      char* buffer = allocate(s.size() + 2, allocated);
+      if (buffer == nullptr)
+        return;
+      *buffer++ = '\"';
+      if (!s.empty())
+        for (wchar_t const* p = s.data(); *p != '\0'; ++p)
+          *buffer++ = char(*p);
+      *buffer++ = '\"';
+      return shrink(allocated - s.size() - 2);
     }
 
 
