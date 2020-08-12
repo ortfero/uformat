@@ -28,6 +28,7 @@
 #include <string_view>
 #include <iosfwd>
 #include <stdexcept>
+#include "utf8.hpp"
 
 
 namespace uformat {
@@ -261,7 +262,18 @@ namespace uformat {
     }
 
     void push_back(char c) noexcept {
-      if(n_ >= N) return; p_[n_++] = c; p_[n_] = '\0';
+      if(n_ >= N) return;
+      p_[n_++] = c;
+      p_[n_] = '\0';
+    }
+    
+    
+    void push_back(wchar_t c) noexcept {
+      char* p = p_ + n_;
+      if(!utf8::code_point_to_octets(&c, p, p_ + N + 1))
+        return;
+      *p = '\0';
+      n_ = p - p_;
     }
 
     void pop_back() noexcept {
