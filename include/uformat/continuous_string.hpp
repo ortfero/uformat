@@ -408,7 +408,7 @@ public:
       return npos;
     for(char const *p = data_ + i, *e = data_ + size_; p != e; ++p)
       if(*p == c)
-        return static_cast<size_type>(p - p_);
+        return static_cast<size_type>(p - data_);
     return npos;
   }
 
@@ -427,7 +427,7 @@ public:
   
   
   std::string_view substr(size_type pos, size_type n) const noexcept {
-    return std::string_view{p_ + pos, n};
+    return std::string_view{data_ + pos, n};
   }
   
     
